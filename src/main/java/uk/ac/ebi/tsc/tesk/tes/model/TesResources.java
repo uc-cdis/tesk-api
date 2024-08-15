@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.validation.Valid;
 
 /**
@@ -29,6 +31,13 @@ public class TesResources   {
   @JsonProperty("zones")
   @Valid
   private List<String> zones = null;
+
+  @JsonProperty("backend_parameters_strict")
+  private Boolean backendParametersStrict;
+
+  @JsonProperty("backend_parameters")
+  @Valid
+  private Map<String, String> backendParameters = null;
 
   public TesResources cpuCores(Long cpuCores) {
     this.cpuCores = cpuCores;
@@ -138,6 +147,54 @@ public class TesResources   {
     this.zones = zones;
   }
 
+  public TesResources backendParametersStrict(Boolean backendParametersStrict) {
+    this.backendParametersStrict = backendParametersStrict;
+    return this;
+  }
+
+  /**
+   * If set to true, backends should fail the task if any backend_parameters key/values are unsupported, otherwise, backends should attempt to run the task
+   * @return backendParametersStrict
+  */
+  @ApiModelProperty(value = "If set to true, backends should fail the task if any backend_parameters key/values are unsupported, otherwise, backends should attempt to run the task")
+
+
+  public Boolean getBackendParametersStrict() {
+    return backendParametersStrict;
+  }
+
+  public void setBackendParametersStrict(Boolean backendParametersStrict) {
+    this.backendParametersStrict = backendParametersStrict;
+  }
+
+  public TesResources backendParameters(Map<String, String> backendParameters) {
+    this.backendParameters = backendParameters;
+    return this;
+  }
+
+  public TesResources putBackendParametersItem(String key, String backendParametersItem) {
+    if (this.backendParameters == null) {
+      this.backendParameters = new HashMap<>();
+    }
+    this.backendParameters.put(key, backendParametersItem);
+    return this;
+  }
+
+  /**
+   * Key/value pairs for backend configuration. ServiceInfo shall return a list of keys that a backend supports. Keys are case insensitive. It is expected that clients pass all runtime or hardware requirement key/values that are not mapped to existing tesResources properties to backend_parameters. Backends shall log system warnings if a key is passed that is unsupported. Backends shall not store or return unsupported keys if included in a task. If backend_parameters_strict equals true, backends should fail the task if any key/values are unsupported, otherwise, backends should attempt to run the task. Intended uses include VM size selection, coprocessor configuration, etc. Example: ```json {   \"backend_parameters\" : {     \"VmSize\" : \"Standard_D64_v3\"   } } ``` 
+   * @return backendParameters
+  */
+  @ApiModelProperty(example = "{\"VmSize\":\"Standard_D64_v3\"}", value = "Key/value pairs for backend configuration. ServiceInfo shall return a list of keys that a backend supports. Keys are case insensitive. It is expected that clients pass all runtime or hardware requirement key/values that are not mapped to existing tesResources properties to backend_parameters. Backends shall log system warnings if a key is passed that is unsupported. Backends shall not store or return unsupported keys if included in a task. If backend_parameters_strict equals true, backends should fail the task if any key/values are unsupported, otherwise, backends should attempt to run the task. Intended uses include VM size selection, coprocessor configuration, etc. Example: ```json {   \"backend_parameters\" : {     \"VmSize\" : \"Standard_D64_v3\"   } } ``` ")
+
+
+  public Map<String, String> getBackendParameters() {
+    return backendParameters;
+  }
+
+  public void setBackendParameters(Map<String, String> backendParameters) {
+    this.backendParameters = backendParameters;
+  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -152,12 +209,14 @@ public class TesResources   {
         Objects.equals(this.preemptible, tesResources.preemptible) &&
         Objects.equals(this.ramGb, tesResources.ramGb) &&
         Objects.equals(this.diskGb, tesResources.diskGb) &&
-        Objects.equals(this.zones, tesResources.zones);
+        Objects.equals(this.zones, tesResources.zones) &&
+        Objects.equals(this.backendParametersStrict, tesResources.backendParametersStrict) &&
+        Objects.equals(this.backendParameters, tesResources.backendParameters);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(cpuCores, preemptible, ramGb, diskGb, zones);
+    return Objects.hash(cpuCores, preemptible, ramGb, diskGb, zones, backendParametersStrict, backendParameters);
   }
 
   @Override
@@ -170,6 +229,8 @@ public class TesResources   {
     sb.append("    ramGb: ").append(toIndentedString(ramGb)).append("\n");
     sb.append("    diskGb: ").append(toIndentedString(diskGb)).append("\n");
     sb.append("    zones: ").append(toIndentedString(zones)).append("\n");
+    sb.append("    backendParametersStrict: ").append(toIndentedString(backendParametersStrict)).append("\n");
+    sb.append("    backendParameters: ").append(toIndentedString(backendParameters)).append("\n");
     sb.append("}");
     return sb.toString();
   }
