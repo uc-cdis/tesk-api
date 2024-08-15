@@ -2,15 +2,19 @@ package uk.ac.ebi.tsc.tesk.tes.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
+import uk.ac.ebi.tsc.tesk.tes.model.TesServiceType;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * TesServiceInfoAllOf
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-03-24T17:10:08.716Z[Europe/London]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-08-14T19:09:22.296203-05:00[America/Chicago]")
 public class TesServiceInfoAllOf   {
   @JsonProperty("storage")
   @Valid

@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
  * Organization providing the service
  */
 @ApiModel(description = "Organization providing the service")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-12T17:49:13.631+01:00[Europe/London]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-08-14T19:09:22.296203-05:00[America/Chicago]")
 public class ServiceOrganization   {
   @JsonProperty("name")
   private String name;

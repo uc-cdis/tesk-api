@@ -167,7 +167,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>tes/openapi/task_execution_service.openapi.yaml</inputSpec>
+                            <inputSpec>openapi/task_execution_service.openapi.yaml</inputSpec>
                             <modelPackage>uk.ac.ebi.tsc.tesk.tes.model</modelPackage>
                             <apiPackage>uk.ac.ebi.tsc.tesk.tes.api</apiPackage>
                             <generatorName>spring</generatorName>

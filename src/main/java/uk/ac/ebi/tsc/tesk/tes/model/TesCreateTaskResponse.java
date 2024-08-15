@@ -2,16 +2,17 @@ package uk.ac.ebi.tsc.tesk.tes.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
  * CreateTaskResponse describes a response from the CreateTask endpoint. It will include the task ID that can be used to look up the status of the job.
  */
 @ApiModel(description = "CreateTaskResponse describes a response from the CreateTask endpoint. It will include the task ID that can be used to look up the status of the job.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-03-24T17:10:08.716Z[Europe/London]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-08-14T19:09:22.296203-05:00[America/Chicago]")
 public class TesCreateTaskResponse   {
   @JsonProperty("id")
   private String id;
@@ -25,7 +26,7 @@ public class TesCreateTaskResponse   {
    * Task identifier assigned by the server.
    * @return id
   */
-  @ApiModelProperty(required = true, value = "Task identifier assigned by the server.", example="task-e69c5b95")
+  @ApiModelProperty(required = true, value = "Task identifier assigned by the server.")
   @NotNull
 
 
