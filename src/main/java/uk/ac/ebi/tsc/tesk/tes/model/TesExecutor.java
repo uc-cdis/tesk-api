@@ -12,6 +12,8 @@ import java.util.Map;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
+import static uk.ac.ebi.tsc.tesk.k8s.constant.Constants.ABSOLUTE_PATH_MESSAGE;
+import static uk.ac.ebi.tsc.tesk.k8s.constant.Constants.ABSOLUTE_PATH_REGEXP;
 /**
  * Executor describes a command to be executed, and its environment.
  */
@@ -52,6 +54,7 @@ public class TesExecutor   {
   */
   @ApiModelProperty(example = "ubuntu:20.04", required = true, value = "Name of the container image. The string will be passed as the image argument to the containerization run command. Examples:    - `ubuntu`    - `quay.io/aptible/ubuntu`    - `gcr.io/my-org/my-image`    - `myregistryhost:5000/fedora/httpd:version1.0`")
   @NotNull
+  @NotBlank
 
 
   public String getImage() {
@@ -101,7 +104,7 @@ public class TesExecutor   {
    * @return workdir
   */
   @ApiModelProperty(example = "/data/", value = "The working directory that the command will be executed in. If not defined, the system will default to the directory set by the container image.")
-
+  @Pattern(regexp = ABSOLUTE_PATH_REGEXP, message = ABSOLUTE_PATH_MESSAGE)
 
   public String getWorkdir() {
     return workdir;
@@ -121,7 +124,7 @@ public class TesExecutor   {
    * @return stdin
   */
   @ApiModelProperty(example = "/data/file1", value = "Path inside the container to a file which will be piped to the executor's stdin. This must be an absolute path. This mechanism could be used in conjunction with the input declaration to process a data file using a tool that expects STDIN.  For example, to get the MD5 sum of a file by reading it into the STDIN ``` {   \"command\" : [\"/bin/md5\"],   \"stdin\" : \"/data/file1\" } ```")
-
+  @Pattern(regexp = ABSOLUTE_PATH_REGEXP, message = ABSOLUTE_PATH_MESSAGE)
 
   public String getStdin() {
     return stdin;
@@ -161,7 +164,7 @@ public class TesExecutor   {
    * @return stderr
   */
   @ApiModelProperty(example = "/tmp/stderr.log", value = "Path inside the container to a file where the executor's stderr will be written to. Must be an absolute path. Example: ``` {   \"stderr\" : \"/tmp/stderr.log\" } ```")
-
+  @Pattern(regexp = ABSOLUTE_PATH_REGEXP, message = ABSOLUTE_PATH_MESSAGE)
 
   public String getStderr() {
     return stderr;

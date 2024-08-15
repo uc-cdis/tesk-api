@@ -9,6 +9,8 @@ import uk.ac.ebi.tsc.tesk.tes.model.TesFileType;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
+import static uk.ac.ebi.tsc.tesk.k8s.constant.Constants.ABSOLUTE_PATH_MESSAGE;
+import static uk.ac.ebi.tsc.tesk.k8s.constant.Constants.ABSOLUTE_PATH_REGEXP;
 /**
  * Input describes Task input files.
  */
@@ -104,6 +106,8 @@ public class TesInput   {
   */
   @ApiModelProperty(example = "/data/file1", required = true, value = "Path of the file inside the container. Must be an absolute path.")
   @NotNull
+  @Pattern(regexp = ABSOLUTE_PATH_REGEXP, message = ABSOLUTE_PATH_MESSAGE)
+  @NotBlank
 
 
   public String getPath() {
