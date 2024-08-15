@@ -2,21 +2,17 @@ package uk.ac.ebi.tsc.tesk.tes.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import uk.ac.ebi.tsc.tesk.tes.model.TesExecutor;
-import uk.ac.ebi.tsc.tesk.tes.model.TesInput;
-import uk.ac.ebi.tsc.tesk.tes.model.TesOutput;
-import uk.ac.ebi.tsc.tesk.tes.model.TesResources;
-import uk.ac.ebi.tsc.tesk.tes.model.TesState;
-import uk.ac.ebi.tsc.tesk.tes.model.TesTaskLog;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+
+import static uk.ac.ebi.tsc.tesk.k8s.constant.Constants.ABSOLUTE_PATH_MESSAGE;
+import static uk.ac.ebi.tsc.tesk.k8s.constant.Constants.ABSOLUTE_PATH_REGEXP;
 
 /**
  * Task describes an instance of a task.
@@ -28,7 +24,7 @@ public class TesTask   {
   private String id;
 
   @JsonProperty("state")
-  private TesState state = TesState.UNKNOWN;
+  private TesState state = null;
 
   @JsonProperty("name")
   private String name;
@@ -49,7 +45,8 @@ public class TesTask   {
 
   @JsonProperty("executors")
   @Valid
-  private List<TesExecutor> executors = new ArrayList<>();
+  //TES API design flaw - executors are required, but only for input (should not appear in minimal outputs)
+  private List<TesExecutor> executors = null;
 
   @JsonProperty("volumes")
   @Valid
@@ -164,7 +161,7 @@ public class TesTask   {
    * Input files that will be used by the task. Inputs will be downloaded and mounted into the executor container as defined by the task request document.
    * @return inputs
   */
-  @ApiModelProperty(example = "[{\"url\":\"s3://my-object-store/file1\",\"path\":\"/data/file1\"}]", value = "Input files that will be used by the task. Inputs will be downloaded and mounted into the executor container as defined by the task request document.")
+  @ApiModelProperty(example = "[{\"url\":\"s3://<CHANGE_THIS>/file1\",\"path\":\"/data/file1\"}]", value = "Input files that will be used by the task. Inputs will be downloaded and mounted into the executor container as defined by the task request document.")
 
   @Valid
 
@@ -193,7 +190,7 @@ public class TesTask   {
    * Output files. Outputs will be uploaded from the executor container to long-term storage.
    * @return outputs
   */
-  @ApiModelProperty(example = "[{\"path\":\"/data/outfile\",\"url\":\"s3://my-object-store/outfile-1\",\"type\":\"FILE\"}]", value = "Output files. Outputs will be uploaded from the executor container to long-term storage.")
+  @ApiModelProperty(example = "[{\"path\":\"/data/outfile\",\"url\":\"s3://<CHANGE_THIS>/outfile-1\",\"type\":\"FILE\"}]", value = "Output files. Outputs will be uploaded from the executor container to long-term storage.")
 
   @Valid
 
@@ -245,7 +242,7 @@ public class TesTask   {
   */
   @ApiModelProperty(required = true, value = "An array of executors to be run. Each of the executors will run one at a time sequentially. Each executor is a different command that will be run, and each can utilize a different docker image. But each of the executors will see the same mapped inputs and volumes that are declared in the parent CreateTask message.  Execution stops on the first error.")
   @NotNull
-
+  @NotEmpty
   @Valid
 
   public List<TesExecutor> getExecutors() {
@@ -276,7 +273,7 @@ public class TesTask   {
   @ApiModelProperty(example = "[\"/vol/A/\"]", value = "Volumes are directories which may be used to share data between Executors. Volumes are initialized as empty directories by the system when the task starts and are mounted at the same path in each Executor.  For example, given a volume defined at `/vol/A`, executor 1 may write a file to `/vol/A/exec1.out.txt`, then executor 2 may read from that file.  (Essentially, this translates to a `docker run -v` flag where the container path is the same for each executor).")
 
 
-  public List<String> getVolumes() {
+  public List<@Pattern(regexp = ABSOLUTE_PATH_REGEXP, message = ABSOLUTE_PATH_MESSAGE) String> getVolumes() {
     return volumes;
   }
 
